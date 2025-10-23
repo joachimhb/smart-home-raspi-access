@@ -1,7 +1,7 @@
-import check from 'check-types-2';
+const check = require('check-types-2');
 
-import Circuit         from '../sensors/Circuit.js';
-import IntervalCircuit from '../sensors/IntervalCircuit.js';
+const Circuit         = require('../sensors/Circuit.js');
+const IntervalCircuit = require('../sensors/IntervalCircuit.js');
 
 class Button {
   constructor(params) {

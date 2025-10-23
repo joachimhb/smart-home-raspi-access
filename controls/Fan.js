@@ -1,5 +1,5 @@
-import rpio from 'rpio';
-import check from 'check-types-2';
+const rpio = require('rpio');
+const check = require('check-types-2');
 
 rpio.init({mapping: 'gpio'});
 

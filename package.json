@@ -15,9 +15,6 @@
   },
   "devDependencies": {
     "@joachimhb/bot": "git+https://github.com/joachimhb/bot.git#0.1.0",
-    "eslint": "7.24.0",
-    "eslint-config-es": "3.28.27",
-    "eslint-plugin-json": "2.1.2",
     "log4js": "6.3.0"
   },
   "repository": {

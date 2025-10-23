@@ -1,7 +1,7 @@
-import _     from 'lodash';
-import check from 'check-types-2';
-import delay from 'delay';
-import rpio  from 'rpio';
+const _     = require('lodash');
+const check = require('check-types-2');
+const delay = require('delay');
+const rpio  = require('rpio');
 
 rpio.init({mapping: 'gpio'});
 

@@ -19,6 +19,8 @@ class DHT22 {
     this.lastNotifiedHumidity    = 0;
     this.temperature             = 0;
     this.lastNotifiedTemperature = 0;
+    this.lastUpdate              = null;
+    this.lastUpdateEvent         = null;
 
     this.sensor = dht(this.gpio, 22);
 
@@ -26,6 +28,8 @@ class DHT22 {
 
     this.sensor.on('result', data => {
       let {humidity, temperature} = data;
+
+      this.lastUpdate = new Date();
 
       humidity = Math.round(humidity);
       temperature = Math.round(temperature * 10) / 10;
@@ -40,12 +44,14 @@ class DHT22 {
           this.lastNotifiedHumidity = humidity;
 
           this.onHumidityChange(humidity);
+
+          this.lastUpdateEvent = new Date();
         }
       }
 
       this.humidity = humidity;
 
-      
+
       if(this.temperature !== temperature && typeof this.onTemperatureChange === 'function') {
         const temperatureNotifyDiff = Math.abs(this.lastNotifiedTemperature - temperature);
 
@@ -53,6 +59,8 @@ class DHT22 {
           this.lastNotifiedTemperature = temperature;
 
           this.onTemperatureChange(temperature);
+
+          this.lastUpdateEvent = new Date();
         }
       }
 
@@ -74,6 +82,9 @@ class DHT22 {
     this.logger.debug(`Starting DHT22 interval (${this.interval}ms) at ${this.location}...`);
 
     this.readInterval = setInterval(this.sensor.read, this.interval);
+    this.logInterval = setInterval(() => {
+      this.logger.debug(`DHT22 at ${this.location} Temp: ${this.temperature} / Hum: ${this.humidity} - last update: ${this.lastUpdate ? this.lastUpdate.toISOString() : 'never'} - last update event: ${this.lastUpdateEvent ? this.lastUpdateEvent.toISOString() : 'never'}`);
+    }, 30000);
   }
 
   stop() {
@@ -81,6 +92,7 @@ class DHT22 {
 
     if(this.readInterval) {
       clearInterval(this.readInterval);
+      clearInterval(this.logInterval);
     }
   }
 }
